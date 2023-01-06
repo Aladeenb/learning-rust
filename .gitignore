@@ -1,1 +1,3 @@
-target/
+ports-analyzer/target/
+chat-server/target/
+traffic-analysis-tool/target/

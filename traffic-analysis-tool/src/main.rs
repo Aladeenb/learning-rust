@@ -1,14 +1,21 @@
-use tokio::net::UdpSocket;
 use std::net::{IpAddr, Ipv4Addr};
+use tokio::net::UdpSocket;
 
-async fn trace_route(target: IpAddr, ttl: u8) -> Result<Option<IpAddr>, Box<dyn std::error::Error>> {
+async fn trace_route(
+    target: IpAddr,
+    ttl: u8,
+) -> Result<Option<IpAddr>, Box<dyn std::error::Error>> {
     let socket = UdpSocket::bind("0.0.0.0:0").await?;
     socket.set_ttl(ttl)?;
 
     let mut buf = [0; 16];
     let mut iter = (1..=4).cycle();
-    let src_addr = IpAddr::V4(Ipv4Addr::new(iter.next().unwrap(), iter.next().unwrap(),
-                                             iter.next().unwrap(), iter.next().unwrap()));
+    let src_addr = IpAddr::V4(Ipv4Addr::new(
+        iter.next().unwrap(),
+        iter.next().unwrap(),
+        iter.next().unwrap(),
+        iter.next().unwrap(),
+    ));
     socket.send_to(&[], &src_addr, &target).await?;
 
     let (bytes, src) = socket.recv_from(&mut buf).await?;
