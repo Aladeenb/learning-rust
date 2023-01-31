@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+    "channels",
+    "chat-server",
+    "ports-analyzer",
+    "traffic-analysis-tool",
+]
